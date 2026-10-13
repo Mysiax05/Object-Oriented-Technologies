@@ -2,6 +2,7 @@ package pl.edu.agh.iisg.to.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -65,30 +66,50 @@ public class Course {
     }
 
     public boolean enrollStudent(final Student student) {
-        String enrollStudentSql = "";
+        String enrollStudentSql = "INSERT INTO student_course (student_id, course_id) VALUES (?, ?)";
         Object[] args = {
-
+            student.id(),
+                id()
         };
 
-        //TODO
-
-        return false;
+        try {
+            QueryExecutor.createAndObtainId(enrollStudentSql, args);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List<Student> studentList() {
-        String findStudentListSql = "";
+        String findStudentListSql = "SELECT * FROM student s JOIN student_course sc ON s.id = sc.student_id WHERE sc.course_id = ?";
         Object[] args = {
-
+                id(),
         };
-
         List<Student> resultList = new LinkedList<>();
-        // TODO
 
+        try {
+            ResultSet rs = QueryExecutor.read(findStudentListSql, args);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                int indexNumber = rs.getInt("index_number");
+
+                resultList.add(new Student(id, firstName, lastName, indexNumber));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
         return resultList;
     }
 
     public List<Student> cachedStudentsList() {
-        //TOTO implement
+        if (!isStudentsListDownloaded) {
+            this.enrolledStudents = studentList();
+            this.isStudentsListDownloaded = true;
+        }
         return enrolledStudents;
     }
 
