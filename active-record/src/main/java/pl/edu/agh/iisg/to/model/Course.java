@@ -74,6 +74,7 @@ public class Course {
 
         try {
             QueryExecutor.createAndObtainId(enrollStudentSql, args);
+            isStudentsListDownloaded = false;
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
