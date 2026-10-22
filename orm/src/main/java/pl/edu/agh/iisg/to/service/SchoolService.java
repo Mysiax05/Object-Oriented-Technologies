@@ -1,11 +1,10 @@
 package pl.edu.agh.iisg.to.service;
 
-import pl.edu.agh.iisg.to.dao.CourseDao;
 import pl.edu.agh.iisg.to.dao.GradeDao;
-import pl.edu.agh.iisg.to.dao.StudentDao;
 import pl.edu.agh.iisg.to.model.Course;
 import pl.edu.agh.iisg.to.model.Grade;
 import pl.edu.agh.iisg.to.model.Student;
+import pl.edu.agh.iisg.to.repository.StudentRepository;
 import pl.edu.agh.iisg.to.session.TransactionService;
 
 import java.util.*;
@@ -14,16 +13,13 @@ public class SchoolService {
 
     private final TransactionService transactionService;
 
-    private final StudentDao studentDao;
-
-    private final CourseDao courseDao;
+    private final StudentRepository studentRepository;
 
     private final GradeDao gradeDao;
 
-    public SchoolService(TransactionService transactionService, StudentDao studentDao, CourseDao courseDao, GradeDao gradeDao) {
+    public SchoolService(TransactionService transactionService, StudentRepository studentRepository, GradeDao gradeDao) {
         this.transactionService = transactionService;
-        this.studentDao = studentDao;
-        this.courseDao = courseDao;
+        this.studentRepository = studentRepository;
         this.gradeDao = gradeDao;
     }
 
@@ -43,7 +39,7 @@ public class SchoolService {
 
     public boolean removeStudent(int indexNumber) {
         return transactionService.doAsTransaction(() -> {
-            Optional<Student> studentOptional = studentDao.findByIndexNumber(indexNumber);
+            Optional<Student> studentOptional = studentRepository.getById(indexNumber);
             if (studentOptional.isEmpty()) {
                 return false;
             }
@@ -59,7 +55,7 @@ public class SchoolService {
             }
             student.gradeSet().clear();
 
-            studentDao.remove(student);
+            studentRepository.remove(student);
             return true;
         }).orElse(false);
     }
@@ -82,19 +78,19 @@ public class SchoolService {
     }
 
     public Map<String, List<Float>> getStudentGrades(String courseName) {
-        Optional<Course> courseOptional = courseDao.findByName(courseName);
-        if (courseOptional.isEmpty()) {
-            return Collections.emptyMap();
-        }
-        Course course = courseOptional.get();
+        List<Student> studentList = studentRepository.findAllByCourseName(courseName);
         Map<String, List<Float>> studentGrades = new HashMap<>();
 
-        for (Grade grade : course.gradeSet()) {
-            String studentFullName = grade.student().fullName();
+        for (Student student: studentList) {
+            String studentFullName = student.fullName();
 
-            studentGrades.computeIfAbsent(studentFullName, _ -> new ArrayList<>())
-                    .add(grade.grade());
+            List<Float> gradesForCourse = student.gradeSet().stream()
+                    .filter(grade -> grade.course().name().equals(courseName))
+                    .map(Grade::grade)
+                    .toList();
+
+            studentGrades.put(studentFullName, gradesForCourse);
         }
-        return studentGrades;
+    return studentGrades;
     }
 }
