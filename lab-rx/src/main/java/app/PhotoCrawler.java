@@ -51,6 +51,10 @@ public class PhotoCrawler {
     }
 
     public void downloadPhotosForMultipleQueries(List<String> queries) {
-        // TODO Implement me :(
+            photoDownloader
+                    .searchForPhotos(queries)
+                    .blockingSubscribe(photoSerializer::savePhoto,
+                            error -> System.err.println("Could not download a photo: " + error.getMessage()),
+                                    () -> System.out.println("Download finished!"));
     }
 }

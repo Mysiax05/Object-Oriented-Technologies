@@ -14,7 +14,7 @@ public class CrawlerApp {
         PhotoCrawler photoCrawler = new PhotoCrawler();
         photoCrawler.resetLibrary();
 //        photoCrawler.downloadPhotoExamples();
-        photoCrawler.downloadPhotosForQuery(TOPICS.getFirst());
+//        photoCrawler.downloadPhotosForQuery(TOPICS.getFirst());
         photoCrawler.downloadPhotosForMultipleQueries(TOPICS);
     }
 }
