@@ -24,25 +24,32 @@ public class PhotoDownloader {
 
     public Observable<Photo> getPhotoExamples() throws IOException {
         return Observable.just("https://i.ytimg.com/vi/7uxQjydfBOU/hqdefault.jpg",
-                "http://digitalspyuk.cdnds.net/16/51/1280x640/landscape-1482419524-12382542-low-res-sherlock.jpg",
-                "http://image.pbs.org/video-assets/pbs/masterpiece/132733/images/mezzanine_172.jpg",
-                "https://classicmystery.files.wordpress.com/2016/04/miss-marple-2.jpg",
-                "https://i.pinimg.com/736x/7c/14/c9/7c14c97839940a09f987fbadbd47eb89--detective-monk-adrian-monk.jpg")
+                        "http://digitalspyuk.cdnds.net/16/51/1280x640/landscape-1482419524-12382542-low-res-sherlock.jpg",
+                        "http://image.pbs.org/video-assets/pbs/masterpiece/132733/images/mezzanine_172.jpg",
+                        "https://classicmystery.files.wordpress.com/2016/04/miss-marple-2.jpg",
+                        "https://i.pinimg.com/736x/7c/14/c9/7c14c97839940a09f987fbadbd47eb89--detective-monk-adrian-monk.jpg")
                 .map(this::getPhoto);
     }
 
-    public List<Photo> searchForPhotos(String searchQuery) throws IOException, InterruptedException {
-        List<Photo> photos = new ArrayList<>();
-        List<String> photoUrls = GoogleSearchDriver.searchForImages(searchQuery);
-
-        for (String photoUrl : photoUrls) {
+    public Observable<Photo> searchForPhotos(String searchQuery) {
+        return Observable.create(observer -> {
             try {
-                photos.add(getPhoto(photoUrl));
+                List<String> photoUrls = GoogleSearchDriver.searchForImages(searchQuery);
+                for (String photoUrl : photoUrls) {
+                    try {
+                        if (observer.isDisposed()) {
+                            break;
+                        }
+                        observer.onNext(getPhoto(photoUrl));
+                    } catch (IOException e) {
+                        log.log(Level.WARNING, "Could not find a photo", e);
+                    }
+                }
+                observer.onComplete();
             } catch (IOException e) {
-                log.log(Level.WARNING, "Could not download a photo", e);
+                observer.onError(e);
             }
-        }
-        return photos;
+        });
     }
 
     private Photo getPhoto(String photoUrl) throws IOException {
