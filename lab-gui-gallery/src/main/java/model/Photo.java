@@ -3,33 +3,34 @@ package model;
 import java.io.ByteArrayInputStream;
 import java.util.UUID;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.scene.image.Image;
 
 
 public class Photo {
 
-    private String name;
+    private StringProperty name;
 
-    private final Image photoData;
+    private final ObjectProperty<Image> photoData;
 
     public Photo(String extension, byte[] photoData) {
-        this.photoData = new Image(new ByteArrayInputStream(photoData));
-        this.name = UUID.randomUUID().toString() + "." + extension;
+        this.photoData = new SimpleObjectProperty<>(new Image(new ByteArrayInputStream(photoData)));
+        this.name = new SimpleStringProperty(UUID.randomUUID().toString() + "." + extension);
     }
 
     public String getName() {
-        return name;
+        return name.get();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     public Image getPhotoData() {
+        return photoData.get();
+    }
+
+    public ReadOnlyObjectProperty<Image> photoDataProperty() {
         return photoData;
     }
 }
