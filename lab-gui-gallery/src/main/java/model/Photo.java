@@ -33,4 +33,8 @@ public class Photo {
     public ReadOnlyObjectProperty<Image> photoDataProperty() {
         return photoData;
     }
+
+    public StringProperty nameProperty() {
+        return name;
+    }
 }
