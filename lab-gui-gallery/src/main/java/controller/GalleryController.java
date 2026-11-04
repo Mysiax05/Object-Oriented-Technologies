@@ -3,8 +3,10 @@ package controller;
 
 import javafx.fxml.FXML;
 
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Gallery;
 import model.Photo;
@@ -18,23 +20,49 @@ public class GalleryController {
     public TextField imageNameField;
 
     @FXML
-    private ListView imagesListView;
-
-    private Gallery galleryModel;
+    private ListView<Photo> imagesListView;
 
     @FXML
     public void initialize() {
-        // TODO additional FX controls initialization
+        imagesListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Photo item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    ImageView photoIcon = new ImageView(item.getPhotoData());
+                    photoIcon.setPreserveRatio(true);
+                    photoIcon.setFitHeight(50);
+                    setGraphic(photoIcon);
+                }
+            }
+        });
+
+        var property = imagesListView.getSelectionModel().selectedItemProperty();
+        property.addListener(
+                (observable, oldValue, newValue) -> {
+                    if (oldValue != null) {
+                        imageNameField.textProperty().unbindBidirectional(oldValue.nameProperty());
+                    }
+                    if (newValue != null) {
+                        imageNameField.textProperty().bindBidirectional(newValue.nameProperty());
+                        imageView.setImage(newValue.getPhotoData());
+                    } else {
+                        imageNameField.setText("");
+                    }
+                });
     }
 
     public void setModel(Gallery gallery) {
-        this.galleryModel = gallery;
-        bindSelectedPhoto(gallery.getPhotos().get(0));
+        imagesListView.setItems(gallery.getPhotos());
+        imagesListView.getSelectionModel().select(0);
     }
 
     private void bindSelectedPhoto(Photo selectedPhoto) {
         imageView.imageProperty().bind(selectedPhoto.photoDataProperty());
-        imageNameField.textProperty().bind(selectedPhoto.nameProperty());
+        imageNameField.textProperty().bindBidirectional(selectedPhoto.nameProperty());
     }
 }
 
