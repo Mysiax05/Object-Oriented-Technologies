@@ -56,12 +56,12 @@ public class PhotoSerializer {
     }
 
     public void savePhoto(Photo photo) {
-        photo.nameProperty().addListener((observable, oldValue, newValue) -> {
-            renamePhoto(oldValue, newValue);
-        });
-
         Thread.ofVirtual().start(() -> {
             try {
+                photo.nameProperty().addListener((observable, oldValue, newValue) -> {
+                    renamePhoto(oldValue, newValue);
+                });
+                
                 ImageIO.write(SwingFXUtils.fromFXImage(photo.getPhotoData(), null), "png", new File(getPhotoPath(photo)));
                 log.info("SAVE photo: " + photo.getName());
             } catch (IOException e) {

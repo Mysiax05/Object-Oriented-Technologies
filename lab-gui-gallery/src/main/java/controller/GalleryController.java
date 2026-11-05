@@ -61,8 +61,7 @@ public class GalleryController {
                         imageNameField.textProperty().unbindBidirectional(oldValue.nameProperty());
                     }
                     if (newValue != null) {
-                        imageNameField.textProperty().bindBidirectional(newValue.nameProperty());
-                        imageView.setImage(newValue.getPhotoData());
+                        bindSelectedPhoto(newValue);
                     } else {
                         imageNameField.setText("");
                     }
