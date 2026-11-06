@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
 import pl.edu.agh.logger.Logger;
 import pl.edu.agh.school.SchoolClass;
 import pl.edu.agh.school.Teacher;

@@ -1,5 +1,6 @@
 package pl.edu.agh.school;
 
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -7,6 +8,7 @@ public class School {
 
     private final SchoolDAO schoolDAO;
 
+    @Inject
     public School(SchoolDAO schoolDAO) {
         this.schoolDAO = schoolDAO;
     }

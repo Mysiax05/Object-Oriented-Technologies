@@ -5,11 +5,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import pl.edu.agh.logger.ConsoleMessageSerializer;
 import pl.edu.agh.logger.FileMessageSerializer;
 import pl.edu.agh.logger.Logger;
 import pl.edu.agh.school.*;
-import pl.edu.agh.school.persistence.SerializablePersistenceManager;
+import pl.edu.agh.school.guice.SchoolModule;
 
 public class SchoolDemo {
 
@@ -17,7 +20,7 @@ public class SchoolDemo {
 
     private final DateFormat timeFormat = new SimpleDateFormat("hh:mm");
 
-
+    @Inject
     public SchoolDemo(School school) {
         this.school = school;
     }
@@ -28,11 +31,8 @@ public class SchoolDemo {
         Logger.getInstance().registerSerializer(
                 new FileMessageSerializer("logfile.log"));
 
-        SerializablePersistenceManager persistenceManager = new SerializablePersistenceManager();
-        persistenceManager.setTeachersStorageFileName("teachers2.dat");
-        SchoolDAO schoolDAO = new SchoolDAO(persistenceManager);
-        School school = new School(schoolDAO);
-        SchoolDemo schoolDemo = new SchoolDemo(school);
+        Injector injector = Guice.createInjector(new SchoolModule());
+        SchoolDemo schoolDemo = injector.getInstance(SchoolDemo.class);
 
         schoolDemo.initTeachers();
         schoolDemo.initClass();
