@@ -5,10 +5,10 @@ import java.util.Collection;
 
 public class School {
 
-    private SchoolDAO schoolDAO;
+    private final SchoolDAO schoolDAO;
 
-    public School() {
-        this.schoolDAO = new SchoolDAO();
+    public School(SchoolDAO schoolDAO) {
+        this.schoolDAO = schoolDAO;
     }
 
     public void addTeacher(Teacher teacher) {

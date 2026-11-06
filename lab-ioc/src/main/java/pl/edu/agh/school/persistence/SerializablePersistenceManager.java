@@ -8,7 +8,7 @@ import pl.edu.agh.logger.Logger;
 import pl.edu.agh.school.SchoolClass;
 import pl.edu.agh.school.Teacher;
 
-public final class SerializablePersistenceManager {
+public final class SerializablePersistenceManager implements SerializablePersistenceManagerInterface {
 
     private static final Logger log = Logger.getInstance();
 
@@ -19,6 +19,14 @@ public final class SerializablePersistenceManager {
     public SerializablePersistenceManager() {
         teachersStorageFileName = "teachers.dat";
         classStorageFileName = "classes.dat";
+    }
+
+    public void setTeachersStorageFileName(String fileName) {
+        this.teachersStorageFileName = fileName;
+    }
+
+    public void setClassStorageFileName(String fileName) {
+        this.classStorageFileName = fileName;
     }
 
     public void saveTeachers(List<Teacher> teachers) {

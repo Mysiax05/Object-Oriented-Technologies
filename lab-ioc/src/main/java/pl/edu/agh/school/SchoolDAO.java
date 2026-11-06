@@ -16,8 +16,8 @@ public class SchoolDAO {
 
     private final SerializablePersistenceManager manager;
 
-    public SchoolDAO() {
-        manager = new SerializablePersistenceManager();
+    public SchoolDAO(SerializablePersistenceManager persistenceManager) {
+        manager = persistenceManager;
         teachers = manager.loadTeachers();
         classes = manager.loadClasses();
     }

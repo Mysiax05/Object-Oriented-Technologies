@@ -8,14 +8,8 @@ import java.util.Collection;
 import pl.edu.agh.logger.ConsoleMessageSerializer;
 import pl.edu.agh.logger.FileMessageSerializer;
 import pl.edu.agh.logger.Logger;
-import pl.edu.agh.school.DayOfWeek;
-import pl.edu.agh.school.Person;
-import pl.edu.agh.school.School;
-import pl.edu.agh.school.SchoolClass;
-import pl.edu.agh.school.Student;
-import pl.edu.agh.school.Subject;
-import pl.edu.agh.school.Teacher;
-import pl.edu.agh.school.Term;
+import pl.edu.agh.school.*;
+import pl.edu.agh.school.persistence.SerializablePersistenceManager;
 
 public class SchoolDemo {
 
@@ -23,8 +17,9 @@ public class SchoolDemo {
 
     private final DateFormat timeFormat = new SimpleDateFormat("hh:mm");
 
-    public SchoolDemo() {
-        school = new School();
+
+    public SchoolDemo(School school) {
+        this.school = school;
     }
 
     public static void main(String[] args) throws Exception {
@@ -33,7 +28,12 @@ public class SchoolDemo {
         Logger.getInstance().registerSerializer(
                 new FileMessageSerializer("logfile.log"));
 
-        SchoolDemo schoolDemo = new SchoolDemo();
+        SerializablePersistenceManager persistenceManager = new SerializablePersistenceManager();
+        persistenceManager.setTeachersStorageFileName("teachers2.dat");
+        SchoolDAO schoolDAO = new SchoolDAO(persistenceManager);
+        School school = new School(schoolDAO);
+        SchoolDemo schoolDemo = new SchoolDemo(school);
+
         schoolDemo.initTeachers();
         schoolDemo.initClass();
         schoolDemo.showClass();
