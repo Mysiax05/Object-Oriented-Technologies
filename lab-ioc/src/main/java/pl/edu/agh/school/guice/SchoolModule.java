@@ -3,12 +3,12 @@ package pl.edu.agh.school.guice;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import pl.edu.agh.school.persistence.SerializablePersistenceManager;
-import pl.edu.agh.school.persistence.SerializablePersistenceManagerInterface;
+import pl.edu.agh.school.persistence.PersistenceManager;
 
 public class SchoolModule extends AbstractModule {
 
     @Provides
-    SerializablePersistenceManagerInterface providePersistenceManager(SerializablePersistenceManager persistenceManager) {
+    PersistenceManager providePersistenceManager(SerializablePersistenceManager persistenceManager) {
         return  persistenceManager;
     }
 }

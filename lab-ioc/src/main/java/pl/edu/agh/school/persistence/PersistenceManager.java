@@ -5,7 +5,7 @@ import pl.edu.agh.school.Teacher;
 
 import java.util.List;
 
-public interface SerializablePersistenceManagerInterface {
+public interface PersistenceManager {
 
     void saveTeachers(List<Teacher> teacherList);
 
