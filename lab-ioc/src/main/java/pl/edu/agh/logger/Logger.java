@@ -1,11 +1,17 @@
 package pl.edu.agh.logger;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+@Singleton
 public class Logger {
     protected static Logger logger;
 
@@ -34,6 +40,11 @@ public class Logger {
 
     public void registerSerializer(IMessageSerializer messageSerializer) {
         registeredSerializers.add(messageSerializer);
+    }
+
+    @Inject
+    public void registerSerializers(@Named("serializers") List<IMessageSerializer> messageSerializers) {
+        messageSerializers.forEach(this::registerSerializer);
     }
 
     public void log(String message) {

@@ -8,8 +8,6 @@ import java.util.Collection;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.name.Names;
 import pl.edu.agh.logger.ConsoleMessageSerializer;
 import pl.edu.agh.logger.FileMessageSerializer;
 import pl.edu.agh.logger.Logger;
@@ -28,10 +26,6 @@ public class SchoolDemo {
     }
 
     public static void main(String[] args) throws Exception {
-
-        Logger.getInstance().registerSerializer(new ConsoleMessageSerializer());
-        Logger.getInstance().registerSerializer(
-                new FileMessageSerializer("logfile.log"));
 
         Injector injector = Guice.createInjector(new SchoolModule());
         SchoolDemo schoolDemo = injector.getInstance(SchoolDemo.class);
