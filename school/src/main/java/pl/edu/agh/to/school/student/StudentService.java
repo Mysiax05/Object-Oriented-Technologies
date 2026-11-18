@@ -3,6 +3,7 @@ package pl.edu.agh.to.school.student;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.to.school.course.Course;
 import pl.edu.agh.to.school.grade.GradeService;
 
 @Service
@@ -23,5 +24,9 @@ public class StudentService {
     @PreDestroy
     public void onServiceDestroy() {
         System.out.println("Student service destroyed");
+    }
+
+    public void assignGrade(Student student, Course course, double gradeValue) {
+        gradeService.assignGrade(student, course, gradeValue);
     }
 }

@@ -3,6 +3,8 @@ package pl.edu.agh.to.school.notification;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.to.school.grade.Grade;
+import pl.edu.agh.to.school.student.Student;
 
 @Service
 public class ConsoleNotificationService implements NotificationService{
@@ -19,5 +21,10 @@ public class ConsoleNotificationService implements NotificationService{
     @PreDestroy
     public void onServiceDestroy() {
         System.out.println("Console notification service destroyed");
+    }
+
+    @Override
+    public void notify(Student student, Grade grade) {
+        System.out.printf("%s got degree: %s from: %s%n", student.getFullName(), grade.value(), grade.course());
     }
 }
