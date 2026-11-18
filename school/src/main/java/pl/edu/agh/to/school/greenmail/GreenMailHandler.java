@@ -3,6 +3,7 @@ package pl.edu.agh.to.school.greenmail;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -19,6 +20,10 @@ public class GreenMailHandler {
 
     public GreenMailHandler(GreenMail greenMail) {
         this.greenMail = greenMail;
+    }
+
+    @PostConstruct
+    public void start() {
         greenMail.start();
     }
 

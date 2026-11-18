@@ -45,7 +45,7 @@ class SchoolApplicationTests {
 
         //when
         studentService.assignGrade(dummyStudent, dummyCourse, 2.0);
-        
+
         //then
         var expectedGrades = Map.of("1", List.of(new Grade(dummyCourse, 2.0)));
         assertEquals(expectedGrades, gradeBook.getStudentGrades());
