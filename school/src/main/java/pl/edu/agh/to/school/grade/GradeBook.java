@@ -35,4 +35,8 @@ public class GradeBook {
         studentGrades.computeIfAbsent(student.getIndexNumber(), _ -> new ArrayList<>()).add(grade);
         return grade;
     }
+
+    public Map<String, List<Grade>> getStudentGrades() {
+        return studentGrades;
+    }
 }
