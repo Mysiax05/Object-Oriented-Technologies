@@ -4,6 +4,7 @@ package pl.edu.agh.to.school.student;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import pl.edu.agh.to.school.grade.Grade;
 
 import java.time.LocalDate;
@@ -22,7 +23,8 @@ public class Student {
     private LocalDate birthDate;
     private String indexNumber;
 
-//    private List<Grade> grades = new ArrayList<>();;
+    @OneToMany
+    private final List<Grade> grades = new ArrayList<>();;
 
     public Student(String firstName, String lastName, LocalDate birthDate, String indexNumber) {
         this.firstName = firstName;
@@ -55,11 +57,11 @@ public class Student {
         return indexNumber;
     }
 
-//    public void giveGrade(Grade grade) {
-//        grades.add(grade);
-//    }
-//
-//    public List<Grade> getGrades() {
-//        return grades;
-//    }
+    public void giveGrade(Grade grade) {
+        grades.add(grade);
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
 }

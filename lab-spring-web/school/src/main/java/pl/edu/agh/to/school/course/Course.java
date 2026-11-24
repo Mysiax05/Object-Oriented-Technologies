@@ -1,30 +1,37 @@
 package pl.edu.agh.to.school.course;
 
 
+import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import pl.edu.agh.to.school.student.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Course {
 
+    @Id
+    @GeneratedValue
     private int id;
 
     private String name;
 
-    private List<Student> students;
+    @ManyToMany
+    private List<Student> students = new ArrayList<>();
 
     public Course() {}
 
     public Course(String name) {
         this.name = name;
-        this.students = new ArrayList<>();
     }
 
+    @Transactional
     public void assignStudent(Student student) {
         students.add(student);
     }
 
+    @Transactional
     public void removeStudent(Student student) {
         students.remove(student);
     }
