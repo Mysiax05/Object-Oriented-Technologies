@@ -42,4 +42,13 @@ public class StudentService {
 
         return studentRepository.save(student);
     }
+
+    public Double getStudentAverage(String indexNumber) {
+        if (!studentRepository.existsByIndexNumber(indexNumber)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with index: " + indexNumber + " not found");
+        }
+
+        return studentRepository.calculateAverage(indexNumber)
+                .orElse(0.0);
+    }
 }

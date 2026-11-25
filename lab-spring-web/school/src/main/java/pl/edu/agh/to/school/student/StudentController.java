@@ -28,4 +28,9 @@ public class StudentController {
     public Student addGrade(@RequestParam String indexNumber, @PathVariable int gradeValue) {
         return studentService.addStudentNewDegree(indexNumber, gradeValue);
     }
+
+    @GetMapping(path = "grade/average")
+    public Double getAverage(@RequestParam String indexNumber) {
+        return studentService.getStudentAverage(indexNumber);
+    }
 }
