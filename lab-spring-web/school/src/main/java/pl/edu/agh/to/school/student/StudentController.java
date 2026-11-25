@@ -2,6 +2,7 @@ package pl.edu.agh.to.school.student;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,7 +19,11 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents() {
-        return studentService.getStudents();
+    public List<Student> getStudent(@RequestParam(required = false) String indexNumber) {
+        if (indexNumber != null) {
+            return List.of(studentService.getStudentWithIndexNumber(indexNumber));
+        } else {
+            return studentService.getStudents();
+        }
     }
 }
