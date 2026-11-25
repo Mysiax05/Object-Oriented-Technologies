@@ -24,7 +24,7 @@ public class Student {
     private String indexNumber;
 
     @OneToMany
-    private final List<Grade> grades = new ArrayList<>();;
+    private final List<Grade> grades = new ArrayList<>();
 
     public Student(String firstName, String lastName, LocalDate birthDate, String indexNumber) {
         this.firstName = firstName;

@@ -1,9 +1,6 @@
 package pl.edu.agh.to.school.student;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +22,10 @@ public class StudentController {
         } else {
             return studentService.getStudents();
         }
+    }
+
+    @PostMapping(path = "/grade/{gradeValue}")
+    public Student addGrade(@RequestParam String indexNumber, @PathVariable int gradeValue) {
+        return studentService.addStudentNewDegree(indexNumber, gradeValue);
     }
 }
