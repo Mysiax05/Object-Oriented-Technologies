@@ -2,7 +2,6 @@ package pl.edu.agh.to.school.course;
 
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import pl.edu.agh.to.school.student.Student;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class Course {
     private String name;
 
     @ManyToMany
-    private List<Student> students = new ArrayList<>();
+    private final List<Student> students = new ArrayList<>();
 
     public Course() {}
 
@@ -26,12 +25,10 @@ public class Course {
         this.name = name;
     }
 
-    @Transactional
     public void assignStudent(Student student) {
         students.add(student);
     }
 
-    @Transactional
     public void removeStudent(Student student) {
         students.remove(student);
     }

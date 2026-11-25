@@ -27,6 +27,7 @@ public class SchoolConfigurator {
     }
 
     @PostConstruct
+    @Transactional
     public void init() {
         Student kowalski = new Student("Jan", "Kowalski", LocalDate.now(), "123456");
         Student budynek = new Student("Piotr", "Budynek", LocalDate.now(), "6547891");
